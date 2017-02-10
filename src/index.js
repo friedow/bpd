@@ -7,7 +7,7 @@ import './index.css';
 import SonarqubeConnector from './connectors/SonarqubeConnector.js';
 import RestInterface from './connectors/RestInterface.js';
 
-const sonarqubeClient = new SonarqubeConnector("https://bpt-lab.org/sonarqube");
+const sonarqubeClient = new SonarqubeConnector("http://localhost:8091/https://bpt-lab.org/sonarqube");
 
 ReactDOM.render(
   <Overview projects={sonarqubeClient.getProjectList()} />,
