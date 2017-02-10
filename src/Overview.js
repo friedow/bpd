@@ -5,9 +5,10 @@ class Overview extends Component {
     super(props);
   }
   render() {
+    console.log(this.props.projects);
     return (
       <div>
-        this.projects()
+
       </div>
     );
   }

@@ -20,13 +20,13 @@ class SonarqubeConnector {
     return "api/projects/index";
   }
   static getApiRouteForQualityGateStatusByProjectKey() {
-    return "api/qualitygates/project_status?projectKey={0}"
+    return "api/qualitygates/project_status?projectKey={0}";
   }
   static getApiRouteForQualityGateStatusByProjectId() {
-    return "api/qualitygates/project_status?projectId={0}"
+    return "api/qualitygates/project_status?projectId={0}";
   }
   static getApiRouteForMetricStatus() {
-    return "api/measures/component?componentKey={0}&metricKeys={1}"
+    return "api/measures/component?componentKey={0}&metricKeys={1}";
   }
 
   static getServerRequestURI() {
@@ -51,7 +51,7 @@ class SonarqubeConnector {
 
   parseJSON() {
     try {
-        return JSON.parse(this.client.getResponse())
+        return JSON.parse(this.client.getResponse());
     } catch (error) {
         document.getElementById('root').innerHTML = "ERROR!";
         return [];

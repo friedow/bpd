@@ -4,7 +4,7 @@ class RESTInterface {
     }
 
     open(requestMethod, api, async) {
-        this.client.open(requestMethod, api, async);
+        this.client.open(requestMethod, "http://localhost:8091/" + api, async);
     }
 
     sendRequest() {
