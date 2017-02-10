@@ -1,9 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import Overview from './Overview';
 import './index.css';
+import SonarqubeConnector from './connectors/SonarqubeConnector.js';
+import RestInterface from './connectors/RestInterface.js';
+
+const sonarqubeClient = new SonarqubeConnector("https://bpt-lab.org/sonarqube");
 
 ReactDOM.render(
-  <App />,
+  <Overview projects={sonarqubeClient.getProjectList()} />,
   document.getElementById('root')
 );
