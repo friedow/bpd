@@ -3,10 +3,6 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
-    testJquery() {
-        console.log( $(".App-header") );
-    }
-
   render() {
     return (
       <div className="App">
