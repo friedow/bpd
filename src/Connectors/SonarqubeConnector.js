@@ -65,6 +65,11 @@ class SonarqubeConnector {
     this.client.sendRequest();
     return this.parseJSON();
   }
+  getBranchesForProject(projectKey) {
+    const allProjects = this.getProjectList();
+    var desiredBranches = allProjects.filter(function(branch) {return branch["k"].startsWith(projectKey);});
+    return desiredBranches;
+  }
 }
 
 export default SonarqubeConnector;
