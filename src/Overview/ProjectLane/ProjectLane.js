@@ -9,13 +9,23 @@ class ProjectLane extends Component {
   render() {
     const branches = this.props.apiClients["sonarqube"].getBranchesForProject(this.props.projectKey);
     const branchCards = branches.map((branch) => {
-      return <BranchCard key={branch["k"]} projectKey={this.props.projectKey} branchKey={branch["k"]} />;
+      return (
+        <div className="col s2">
+          <BranchCard key={branch["k"]} projectKey={this.props.projectKey} branchKey={branch["k"]} />
+        </div>
+      );
     });
     return (
       <div className="projectLane">
-        {this.props.projectKey}
         <div className="row">
-          <div className="col s12 m6">
+          <div className="col s1">
+            <div className="card teal">
+              <div className="card-content white-text">
+                <span className="card-title">{this.props.projectKey}</span>
+              </div>
+            </div>
+          </div>
+          <div className="col s11">
             {branchCards}
           </div>
         </div>

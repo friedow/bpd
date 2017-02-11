@@ -1,5 +1,5 @@
 .projectLane {
-  background-color: gray;
+  /*background-color: gray;*/
 }
 
 .vertical-text {
@@ -7,4 +7,5 @@
 	transform-origin: left top 0;
   float: left;
   display:block;
+  margin:auto;
 }
