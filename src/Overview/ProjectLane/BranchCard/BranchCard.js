@@ -19,6 +19,7 @@ class BranchCard extends Component {
       <div className="card small horizontal blue-grey darken-1">
         <div className="card-content white-text">
           <span className="card-title">{this.getTitleForCard()}</span>
+          {this.props.lastExecutionTime}
         </div>
       </div>
     );
