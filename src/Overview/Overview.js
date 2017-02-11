@@ -14,7 +14,7 @@ class Overview extends Component {
     );
     return (
       <div>
-        <h3>List of projects</h3>
+        <nav>List of projects</nav>
         <div className="collection">
           {listItems}
         </div>
