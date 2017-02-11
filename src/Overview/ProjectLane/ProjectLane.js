@@ -10,8 +10,8 @@ class ProjectLane extends Component {
     const branches = this.props.apiClients["sonarqube"].getBranchesForProject(this.props.projectKey);
     const branchCards = branches.map((branch) => {
       return (
-        <div className="col s2">
-          <BranchCard key={branch["k"]} projectKey={this.props.projectKey} branchKey={branch["k"]} />
+        <div className="col s2" key={branch["k"]} >
+          <BranchCard projectKey={this.props.projectKey} branchKey={branch["k"]} apiClients={this.props.apiClients} />
         </div>
       );
     });
