@@ -1,53 +1,75 @@
 import React, { Component } from 'react';
 import './ProjectLane.css';
 import BranchCard from './BranchCard/BranchCard.js';
+import Branch from '../../Branch.js';
 
 class ProjectLane extends Component {
   constructor(props) {
     super(props);
+    this.branchesToDisplay = [];
+    this.loadBranches();
+    this.state = {branchCards: ""};
   }
-  render() {
-    var branches = this.props.apiClients["sonarqube"].getBranchesForProject(this.props.projectKey);
-    var branchesToDisplay = [];
-    branches = branches.map((branch) => {
-      branch["componentId"] = this.props.apiClients["sonarqube"].getIdForProject(branch["k"]);
-      branch["lastExecutionTime"] = this.props.apiClients["sonarqube"].getLastExecutionForComponentId(branch["componentId"]);
-      return branch;
+  componentDidMount() {
+    this.setDevBranch();
+    this.setBranchesToBeDisplayed(5);
+  }
+
+  loadBranches() {
+    var sonarqubeBranches = this.props.apiClients["sonarqube"].getBranchesForProject(this.props.projectKey);
+    this.branches = sonarqubeBranches.map((sonarqubeBranch) => {
+      return new Branch(sonarqubeBranch, this.props.projectKey, this.props.apiClients);
     });
-    const devCard = branches.filter((branch) => {
-      return branch["k"].endsWith("dev") || branch["k"].endsWith("developer");
+  }
+
+  setDevBranch() {
+    const devCard = this.branches.filter((branch) => {
+      return branch.getKey().endsWith("dev") || branch.getKey().endsWith("developer");
     })[0];
-    branchesToDisplay.push(devCard);
-    branches.splice(branches.indexOf(devCard), 1);
-    const orderedBranches = branches.sort((branch1, branch2) => {
-      if(branch1["lastExecutionTime"] < branch2["lastExecutionTime"])
+    this.setState({devCard: devCard});
+    this.branchesToDisplay.push(devCard);
+    this.branches.splice(this.branches.indexOf(devCard), 1);
+  }
+
+  setBranchesToBeDisplayed(n) {
+    // Order branches by last execution time
+    const orderedBranches = this.branches.sort((branch1, branch2) => {
+      if(branch1.getLastExecutionTime() < branch2.getLastExecutionTime())
         return 1;
-      if(branch1["lastExecutionTime"] > branch2["lastExecutionTime"])
+      if(branch1.getLastExecutionTime() > branch2.getLastExecutionTime())
           return -1;
         return 0;
     });
-    for (var ii = 0; ii < 5; ii++) {
-      branchesToDisplay.push(orderedBranches[ii]);
+    // Select n most recent branches
+    for (var ii = 0; ii <= n-1; ii++) {
+      this.branchesToDisplay.push(orderedBranches[ii]);
     }
-    const branchCards = branchesToDisplay.map((branch) => {
+    // And create cards for them
+    const branchCards = this.branchesToDisplay.map((branch) => {
       return (
-        <div className="col s2" key={branch["k"]} >
-          <BranchCard projectKey={this.props.projectKey} branchKey={branch["k"]} apiClients={this.props.apiClients} lastExecutionTime={branch["lastExecutionTime"]}/>
+        <div className="col s2" key={branch.getKey()} >
+          <BranchCard projectKey={this.props.projectKey} branch={branch}/>
         </div>
       );
     });
+    this.setState({branchCards: branchCards});
+  }
+
+
+  render() {
+
     return (
       <div className="projectLane">
         <div className="row">
           <div className="col s1">
-            <div className="card teal">
+            <div className="card small teal">
               <div className="card-content white-text">
-                <span className="card-title">{this.props.projectKey}</span>
+                <span className="card-title vertical-text">{this.props.projectKey.split(":")[1]}</span>
               </div>
             </div>
           </div>
           <div className="col s11">
-            {branchCards}
+            {this.state.branchCards}
           </div>
         </div>
 {
