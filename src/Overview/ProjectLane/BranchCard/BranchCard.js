@@ -24,17 +24,17 @@ class BranchCard extends Component {
 
   getColorBasedOnQualityGate() {
     if(this.branch.doesPassQualityGate()) {
-      return "green";
+      return "green darken-3";
     }
-    return "deep-orange";
+    return "orange darken-4";
   }
 
   render() {
     return (
-      <div className={`card small horizontal ${this.getColorBasedOnQualityGate()} darken-1`}>
+      <div className={`card small horizontal ${this.getColorBasedOnQualityGate()}`}>
         <div className="card-content white-text">
           <span className="card-title">{this.getTitleForCard()}</span>
-          {this.props.branch.getLastExecutionTime()}
+          {this.branch.getLastExecutionTime()}
           <div className="card-action">
             <a href={this.branch.getJiraLink}>Open in Jira</a>
           </div>
