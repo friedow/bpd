@@ -8,23 +8,21 @@ class ProjectLane extends Component {
     super(props);
   }
   render() {
-    var branches = this.props.apiClients["sonarqube"].getBranchesForProject(this.props.projectKey);
-
-    var branchesToDisplay = [];
-    branches = branches.map((branch) => {
-      branch["componentId"] = this.props.apiClients["sonarqube"].getComponentIdForProject(branch["k"]);
-      branch["lastExecutionTime"] = this.props.apiClients["sonarqube"].getLastExecutionForComponentId(branch["componentId"]);
-      return branch;
+    var sonarqubeBranches = this.props.apiClients["sonarqube"].getBranchesForProject(this.props.projectKey);
+    const branches = sonarqubeBranches.map((sonarqubeBranch) => {
+      return new Branch(sonarqubeBranch, this.props.projectKey, this.props.apiClients);
     });
+    var branchesToDisplay = [];
+    console.log(branches);
     const devCard = branches.filter((branch) => {
-      return branch["k"].endsWith("dev") || branch["k"].endsWith("developer");
+      return branch.getKey().endsWith("dev") || branch.getKey().endsWith("developer");
     })[0];
     branchesToDisplay.push(devCard);
     branches.splice(branches.indexOf(devCard), 1);
     const orderedBranches = branches.sort((branch1, branch2) => {
-      if(branch1["lastExecutionTime"] < branch2["lastExecutionTime"])
+      if(branch1.getLastExecutionTime() < branch2.getLastExecutionTime())
         return 1;
-      if(branch1["lastExecutionTime"] > branch2["lastExecutionTime"])
+      if(branch1.getLastExecutionTime() > branch2.getLastExecutionTime())
           return -1;
         return 0;
     });
@@ -33,8 +31,8 @@ class ProjectLane extends Component {
     }
     const branchCards = branchesToDisplay.map((branch) => {
       return (
-        <div className="col s2" key={branch["k"]} >
-          <BranchCard projectKey={this.props.projectKey} branchKey={branch["k"]} apiClients={this.props.apiClients} lastExecutionTime={branch["lastExecutionTime"]}/>
+        <div className="col s2" key={branch.getKey()} >
+          <BranchCard projectKey={this.props.projectKey} branch={branch}/>
         </div>
       );
     });

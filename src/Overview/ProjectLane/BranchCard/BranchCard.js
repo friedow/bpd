@@ -4,37 +4,45 @@ import './BranchCard.css';
 class BranchCard extends Component {
   constructor(props) {
     super(props);
-    this.state = {branchName: this.props.branchKey.replace(this.props.projectKey + ":", "")};
+    this.state = {branchName: this.props.branch.getName()};
+    this.branch = this.props.branch;
   }
   componentDidMount() {
-    //Try to split up into issue# and description
-    const branchPattern = /BP[\-|\_](\d{0,4})[\-|\_](.+)/g;
-    const ret = branchPattern.exec(this.state.branchName);
-    if(ret){
-      this.setState ({issueNumber: ret[1], issueDescription: ret[2]});
+    if(this.branch.isIssueExtractable()) {
+      this.setState({issueNumber: this.branch.getIssueNumber(), issueDescription: this.branch.getIssueName()});
     }
-    this.setState ({qualityGateStatus: this.props.apiClients["sonarqube"].getQualityGateStatusForProject(this.props.branchKey)});
   }
-  render() {
-    return (
-      <div className="card small horizontal blue-grey darken-1">
-        <div className="card-content white-text">
-          <span className="card-title">{this.getTitleForCard()}</span>
-          {this.props.lastExecutionTime}
-          <br />
-          {this.state.qualityGateStatus}
-        </div>
-      </div>
-    );
-  }
+
   getTitleForCard() {
     if (this.state.issueNumber && this.state.issueDescription) {
-      return <span>#{this.state.issueNumber}<br />{this.state.issueDescription}</span>;
+      return <span><a href={this.branch.getJiraLink()} className="white-text">#{this.state.issueNumber}</a><br />{this.state.issueDescription}</span>;
     }
     else {
       return this.state.branchName;
     }
   }
+
+  getColorBasedOnQualityGate() {
+    if(this.branch.doesPassQualityGate()) {
+      return "green";
+    }
+    return "deep-orange";
+  }
+
+  render() {
+    return (
+      <div className={`card small horizontal ${this.getColorBasedOnQualityGate()} darken-1`}>
+        <div className="card-content white-text">
+          <span className="card-title">{this.getTitleForCard()}</span>
+          {this.props.branch.getLastExecutionTime()}
+          <div className="card-action">
+            <a href={this.branch.getJiraLink}>Open in Jira</a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
 }
 
 export default BranchCard;
