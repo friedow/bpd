@@ -94,6 +94,15 @@ class SonarqubeConnector {
     this.client.sendRequest();
     return this.parseJSON()["current"]["executedAt"];
   }
+  getQualityGateStatusForProject(projectKey) {
+    console.log("hey: " + projectKey);
+    const APIRoute = SonarqubeConnector.getApiRouteForQualityGateStatusByProjectKey().format(projectKey);
+    const URI = SonarqubeConnector.getServerRequestURI().format(this.remoteAddress, APIRoute);
+    console.log(URI);
+    this.client.open(this.requestMethod, URI, false);
+    this.client.sendRequest();
+    return this.parseJSON()["projectStatus"]["status"];
+  }
 }
 
 export default SonarqubeConnector;

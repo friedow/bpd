@@ -13,6 +13,7 @@ class BranchCard extends Component {
     if(ret){
       this.setState ({issueNumber: ret[1], issueDescription: ret[2]});
     }
+    this.setState ({qualityGateStatus: this.props.apiClients["sonarqube"].getQualityGateStatusForProject(this.props.branchKey)});
   }
   render() {
     return (
@@ -20,6 +21,8 @@ class BranchCard extends Component {
         <div className="card-content white-text">
           <span className="card-title">{this.getTitleForCard()}</span>
           {this.props.lastExecutionTime}
+          <br />
+          {this.state.qualityGateStatus}
         </div>
       </div>
     );
