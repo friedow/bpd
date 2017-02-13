@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './ProjectLane.css';
 import BranchCard from './BranchCard/BranchCard.js';
+import Branch from '../../Branch.js';
 
 class ProjectLane extends Component {
   constructor(props) {
@@ -8,9 +9,10 @@ class ProjectLane extends Component {
   }
   render() {
     var branches = this.props.apiClients["sonarqube"].getBranchesForProject(this.props.projectKey);
+
     var branchesToDisplay = [];
     branches = branches.map((branch) => {
-      branch["componentId"] = this.props.apiClients["sonarqube"].getIdForProject(branch["k"]);
+      branch["componentId"] = this.props.apiClients["sonarqube"].getComponentIdForProject(branch["k"]);
       branch["lastExecutionTime"] = this.props.apiClients["sonarqube"].getLastExecutionForComponentId(branch["componentId"]);
       return branch;
     });
