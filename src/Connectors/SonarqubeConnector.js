@@ -76,7 +76,7 @@ class SonarqubeConnector {
     var desiredBranches = allProjects.filter(function(branch) {return branch["k"].startsWith(projectKey);});
     return desiredBranches;
   }
-  getIdForProject(projectKey) {
+  getComponentIdForProject(projectKey) {
     const APIRoute = SonarqubeConnector.getApiRouteForComponentDetails().format(projectKey);
     const URI = SonarqubeConnector.getServerRequestURI().format(this.remoteAddress, APIRoute);
     this.client.open(this.requestMethod, URI, false);
