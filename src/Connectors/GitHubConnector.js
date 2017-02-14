@@ -21,10 +21,10 @@ class GitHubConnector extends BasicConnector {
     return "{0}/repos";
   }
   static getApiRouteForListOfBranchesInRepository() {
-    return "repos/{0}/{1}/branches";
+    return "repos/{0}/branches";
   }
   static getApiRouteForBranchDetails() {
-    return "repos/{0}/{1}/branches/{2}";
+    return "repos/{0}/branches/{1}";
   }
 
   constructor(remoteAddress, name, isUser, requestMethod = "GET") {
@@ -41,12 +41,12 @@ class GitHubConnector extends BasicConnector {
     }
     return this.sendRequest(APIRoute);
   }
-  getBranchesForRepository(owner, repository) {
-    const APIRoute = GitHubConnector.getApiRouteForListOfBranchesInRepository().format(owner, repository);
+  getBranchesForRepository(repositoryUrl) {
+    const APIRoute = GitHubConnector.getApiRouteForListOfBranchesInRepository().format(repositoryUrl);
     return this.sendRequest(APIRoute);
   }
-  getDetailsAboutBranch(branch) {
-    const APIRoute = GitHubConnector.getApiRouteForBranchDetails().format(branch.getOwner(), branch.getRepository(), branch.getName());
+  getDetailsAboutBranch(repositoryUrl, branchName) {
+    const APIRoute = GitHubConnector.getApiRouteForBranchDetails().format(repositoryUrl, branchName);
     return this.sendRequest(APIRoute);
   }
 }

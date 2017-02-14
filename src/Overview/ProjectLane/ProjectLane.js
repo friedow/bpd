@@ -16,15 +16,15 @@ class ProjectLane extends Component {
   }
 
   loadBranches() {
-    var sonarqubeBranches = this.props.apiClients["sonarqube"].getBranchesForProject(this.props.projectKey);
-    this.branches = sonarqubeBranches.map((sonarqubeBranch) => {
-      return new Branch(sonarqubeBranch, this.props.projectKey, this.props.apiClients);
+    var gitHubBranches = this.props.apiClients["gitHub"].getBranchesForRepository(this.props.repository);
+    this.branches = gitHubBranches.map((branch) => {
+      return new Branch(branch["name"], this.props.repository, this.props.apiClients);
     });
   }
 
   setDevBranch() {
     const devCard = this.branches.filter((branch) => {
-      return branch.getKey().endsWith("dev") || branch.getKey().endsWith("developer");
+      return branch.isDeveloperBranch();
     })[0];
     this.setState({devCard: devCard});
     this.branchesToDisplay.push(devCard);
@@ -34,9 +34,9 @@ class ProjectLane extends Component {
   setBranchesToBeDisplayed(n) {
     // Order branches by last execution time
     const orderedBranches = this.branches.sort((branch1, branch2) => {
-      if(branch1.getLastExecutionTime() < branch2.getLastExecutionTime())
+      if(branch1.getLastCommitTime() < branch2.getLastCommitTime())
         return 1;
-      if(branch1.getLastExecutionTime() > branch2.getLastExecutionTime())
+      if(branch1.getLastCommitTime() > branch2.getLastCommitTime())
           return -1;
         return 0;
     });
@@ -46,9 +46,11 @@ class ProjectLane extends Component {
     }
     // And create cards for them
     const branchCards = this.branchesToDisplay.map((branch) => {
+      if (!branch)
+        return null;
       return (
-        <div className="col s2" key={branch.getKey()} >
-          <BranchCard projectKey={this.props.projectKey} branch={branch}/>
+        <div className="col s2" key={branch.getName()} >
+          <BranchCard branch={branch}/>
         </div>
       );
     });
@@ -64,7 +66,7 @@ class ProjectLane extends Component {
           <div className="col s1">
             <div className="card small teal">
               <div className="card-content white-text">
-                <span className="card-title vertical-text">{this.props.projectKey.split(":")[1]}</span>
+                <span className="card-title vertical-text">{this.props.repository.split("/")[1]}</span>
               </div>
             </div>
           </div>

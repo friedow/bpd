@@ -1,35 +1,58 @@
 class Branch {
 
-  constructor(projectArray, masterProject, apiClients) {
-    this.key = projectArray["k"];
-    this.id = projectArray["id"];
+  constructor(branchName, repositoryUrl, apiClients) {
+    this.name = branchName;
+    this.owner = repositoryUrl.split("/")[0];
+    this.repository = repositoryUrl.split("/")[1];
     this.apiClients = apiClients;
-    this.masterKey = masterProject;
     this.branchPattern = /BP[\-|\_](\d{0,4})[\-|\_](.+)/;
-    this.componentId = this.apiClients["sonarqube"].getComponentIdForProject(this.key);
-    this.lastExecutionTime = this.apiClients["sonarqube"].getLastExecutionForComponentId(this.componentId);
+    // this.componentId = this.apiClients["sonarqube"].getComponentIdForProject(this.key);
+    // this.lastExecutionTime = this.apiClients["sonarqube"].getLastExecutionForComponentId(this.componentId);
+    this.latestCommitTimer = "";
+    this.latestCommitter = "unknown";
+    this.buildStatus = "unkown";
+    this.update();
   }
 
-  getLastExecutionTime() {
-    return this.lastExecutionTime;
+  /**
+  * Fetches information from GitHub-API and parses returned JSON
+  * to reset attribute-values.
+  *
+  */
+  update() {
+    const latestInformation = this.apiClients["gitHub"].getDetailsAboutBranch(this.getRepositoryUrl(), this.getName());
+    this.latestCommitTimer = new Date(latestInformation["commit"]["commit"]["author"]["date"]);
+    this.latestCommitter = latestInformation["commit"]["commit"]["author"]["name"];
+    const latestBuildInformation = this.apiClients["travis"].getDetailsAboutLatestBuildOfBranch(this.getRepositoryUrl(), this.getName());
+    this.buildStatus = latestBuildInformation["branch"]["state"];
   }
-  getComponentId() {
-    return this.componentId;
-  }
-  getId() {
-    return this.id;
-  }
-  getKey() {
-    return this.key;
-  }
+
   getName() {
-    if(this.key == this.masterKey) {
-      return "master";
-    }
-    if(this.key > this.masterKey) {
-      return this.key.replace(this.masterKey + ":", "");
-    }
-    return this.key;
+    return this.name;
+  }
+  getOwner() {
+    return this.owner;
+  }
+  getRepository() {
+    return this.repository;
+  }
+  getRepositoryUrl() {
+    return this.getOwner() + "/" + this.getRepository();
+  }
+  getLastCommitTime() {
+    return this.latestCommitTimer;
+  }
+  getLastCommitTimeAsString() {
+    return this.getLastCommitTime().toLocaleString();
+  }
+  getBuildStatus() {
+    return this.buildStatus;
+  }
+  isDeveloperBranch() {
+    return (this.getName() == "dev" || this.getName() == "developer");
+  }
+  isMasterBranch() {
+    return (this.getName() == "master");
   }
   isIssueExtractable() {
     const ret = this.branchPattern.exec(this.getName());
@@ -64,12 +87,17 @@ class Branch {
     return this.apiClients["sonarqube"].getQualityGateStatusForProject(this.getKey());
   }
   doesPassQualityGate() {
-    if(this.getQualityGateStatus() == "ERROR") {
-      return false;
-    }
+    // if(this.getQualityGateStatus() == "ERROR") {
+    //   return false;
+    // }
+    // return true;
     return true;
   }
 
+  //TRAVIS FUNCTIONS
+  didLatestBuildPass() {
+    return (this.getBuildStatus() == "passed");
+  }
 
 
 }

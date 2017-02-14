@@ -17,8 +17,18 @@ if (!String.prototype.format) {
 
 class TravisConnector extends BasicConnector {
 
+  static getApiRouteForLatestBuildOfBranch() {
+    return "repos/{0}/branches/{1}";
+  }
+
   constructor(remoteAddress, requestMethod = "GET") {
       super(remoteAddress, requestMethod);
+      this.setAcceptHeader("application/vnd.travis-ci.2+json");
+  }
+
+  getDetailsAboutLatestBuildOfBranch(repositoryUrl, branchName) {
+    const APIRoute = TravisConnector.getApiRouteForLatestBuildOfBranch().format(repositoryUrl, branchName);
+    return this.sendRequest(APIRoute);
   }
 
 }

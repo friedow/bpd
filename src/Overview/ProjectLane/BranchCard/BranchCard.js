@@ -22,8 +22,8 @@ class BranchCard extends Component {
     }
   }
 
-  getColorBasedOnQualityGate() {
-    if(this.branch.doesPassQualityGate()) {
+  getColorBasedOnLatestBuild() {
+    if(this.branch.didLatestBuildPass()) {
       return "green darken-3";
     }
     return "orange darken-4";
@@ -31,10 +31,10 @@ class BranchCard extends Component {
 
   render() {
     return (
-      <div className={`card small horizontal ${this.getColorBasedOnQualityGate()}`}>
+      <div className={`card small horizontal ${this.getColorBasedOnLatestBuild()}`}>
         <div className="card-content white-text">
           <span className="card-title">{this.getTitleForCard()}</span>
-          {this.branch.getLastExecutionTime()}
+          {this.branch.getLastCommitTimeAsString()}
           <div className="card-action">
             <a href={this.branch.getJiraLink}>Open in Jira</a>
           </div>

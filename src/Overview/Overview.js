@@ -11,8 +11,8 @@ class Overview extends Component {
     this.loadProjectLanes();
   }
   loadProjectLanes() {
-    const projectLanes = this.props.monitoredProjects.map((project) =>
-      <ProjectLane projectKey={project} apiClients={this.props.apiClients} key={project} />
+    const projectLanes = this.props.monitoredRepositories.map((repository) =>
+      <ProjectLane key={repository} repository={repository} apiClients={this.props.apiClients} />
     );
     this.setState({projectLanes: projectLanes});
   }
