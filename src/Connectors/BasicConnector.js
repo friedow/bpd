@@ -1,4 +1,4 @@
-import RestInterface from './RestInterface.js';
+import RESTInterface from './RestInterface.js';
 import RESTInterfaceMock from './RestInterfaceMock.js';
 
 /*eslint-disable */
@@ -24,7 +24,7 @@ class BasicConnector {
   constructor(remoteAddress, requestMethod = "GET") {
       this.remoteAddress = remoteAddress;
       this.requestMethod = requestMethod;
-      this.client = new RESTInterfaceMock();
+      this.client = new RESTInterface();
   }
   getRemoteAddress() {
       return self.remoteAddress;
@@ -36,8 +36,8 @@ class BasicConnector {
   setClient(client) {
       this.client = client;
   }
-  setAcceptHeader(acceptedResponse) {
-    this.client.setAcceptHeader(acceptedResponse);
+  setHeader(header, headerValue) {
+    this.client.setHeader(header, headerValue);
   }
 
   sendRequest(APIRoute) {

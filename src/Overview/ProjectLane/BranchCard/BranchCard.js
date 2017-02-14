@@ -23,6 +23,9 @@ class BranchCard extends Component {
   }
 
   getColorBasedOnLatestBuild() {
+    if(!this.branch.didTravisRun()) {
+      return "blue-grey";
+    }
     if(this.branch.didLatestBuildPass()) {
       return "green darken-3";
     }

@@ -10,7 +10,7 @@ class Branch {
     // this.lastExecutionTime = this.apiClients["sonarqube"].getLastExecutionForComponentId(this.componentId);
     this.latestCommitTimer = "";
     this.latestCommitter = "unknown";
-    this.buildStatus = "unkown";
+    this.buildStatus = null;
     this.update();
   }
 
@@ -23,8 +23,12 @@ class Branch {
     const latestInformation = this.apiClients["gitHub"].getDetailsAboutBranch(this.getRepositoryUrl(), this.getName());
     this.latestCommitTimer = new Date(latestInformation["commit"]["commit"]["author"]["date"]);
     this.latestCommitter = latestInformation["commit"]["commit"]["author"]["name"];
-    const latestBuildInformation = this.apiClients["travis"].getDetailsAboutLatestBuildOfBranch(this.getRepositoryUrl(), this.getName());
-    this.buildStatus = latestBuildInformation["branch"]["state"];
+    try {
+      const latestBuildInformation = this.apiClients["travis"].getDetailsAboutLatestBuildOfBranch(this.getRepositoryUrl(), this.getName());
+      this.buildStatus = latestBuildInformation["branch"]["state"];
+    } catch (e) {
+        this.buildStatus = null;
+    }
   }
 
   getName() {
@@ -44,9 +48,6 @@ class Branch {
   }
   getLastCommitTimeAsString() {
     return this.getLastCommitTime().toLocaleString();
-  }
-  getBuildStatus() {
-    return this.buildStatus;
   }
   isDeveloperBranch() {
     return (this.getName() == "dev" || this.getName() == "developer");
@@ -95,8 +96,14 @@ class Branch {
   }
 
   //TRAVIS FUNCTIONS
+  getBuildStatus() {
+    return this.buildStatus;
+  }
   didLatestBuildPass() {
     return (this.getBuildStatus() == "passed");
+  }
+  didTravisRun() {
+    return (this.buildStatus);
   }
 
 

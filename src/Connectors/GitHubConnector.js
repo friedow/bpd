@@ -29,6 +29,7 @@ class GitHubConnector extends BasicConnector {
 
   constructor(remoteAddress, name, isUser, requestMethod = "GET") {
       super(remoteAddress, requestMethod);
+      this.setHeader("Authorization", "");
   }
 
   getListOfRepositories(username, isUser) {

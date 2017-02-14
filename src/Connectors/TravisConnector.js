@@ -23,7 +23,7 @@ class TravisConnector extends BasicConnector {
 
   constructor(remoteAddress, requestMethod = "GET") {
       super(remoteAddress, requestMethod);
-      this.setAcceptHeader("application/vnd.travis-ci.2+json");
+      this.setHeader("Accept", "application/vnd.travis-ci.2+json");
   }
 
   getDetailsAboutLatestBuildOfBranch(repositoryUrl, branchName) {
