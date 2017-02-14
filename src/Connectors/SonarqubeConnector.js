@@ -55,6 +55,13 @@ class SonarqubeConnector {
       this.client = client;
   }
 
+  sendRequest(APIRoute) {
+    const URI = SonarqubeConnector.getServerRequestURI().format(this.remoteAddress, APIRoute);
+    this.client.open(this.requestMethod, URI, false);
+    this.client.sendRequest();
+    return this.parseJSON();
+  }
+
   parseJSON() {
     try {
         return JSON.parse(this.client.getResponse());
@@ -66,10 +73,7 @@ class SonarqubeConnector {
 
   getProjectList() {
     const APIRoute = SonarqubeConnector.getApiRouteForListOfProjects();
-    const URI = SonarqubeConnector.getServerRequestURI().format(this.remoteAddress, APIRoute);
-    this.client.open(this.requestMethod, URI, false);
-    this.client.sendRequest();
-    return this.parseJSON();
+    return this.sendRequest(APIRoute);
   }
   getBranchesForProject(projectKey) {
     const allProjects = this.getProjectList();
@@ -78,10 +82,7 @@ class SonarqubeConnector {
   }
   getComponentIdForProject(projectKey) {
     const APIRoute = SonarqubeConnector.getApiRouteForComponentDetails().format(projectKey);
-    const URI = SonarqubeConnector.getServerRequestURI().format(this.remoteAddress, APIRoute);
-    this.client.open(this.requestMethod, URI, false);
-    this.client.sendRequest();
-    return this.parseJSON()["component"]["id"];
+    return this.sendRequest(APIRoute)["component"]["id"];
   }
   getLastExecutionForProject(projectKey) {
     const projectComponentId = this.getIdForProject(projectKey);
@@ -89,17 +90,11 @@ class SonarqubeConnector {
   }
   getLastExecutionForComponentId(componentId) {
     const APIRoute = SonarqubeConnector.getApiRouteForLastExecutedTast().format(componentId);
-    const URI = SonarqubeConnector.getServerRequestURI().format(this.remoteAddress, APIRoute);
-    this.client.open(this.requestMethod, URI, false);
-    this.client.sendRequest();
-    return this.parseJSON()["current"]["executedAt"];
+    return this.sendRequest(APIRoute)["current"]["executedAt"];
   }
   getQualityGateStatusForProject(projectKey) {
     const APIRoute = SonarqubeConnector.getApiRouteForQualityGateStatusByProjectKey().format(projectKey);
-    const URI = SonarqubeConnector.getServerRequestURI().format(this.remoteAddress, APIRoute);
-    this.client.open(this.requestMethod, URI, false);
-    this.client.sendRequest();
-    return this.parseJSON()["projectStatus"]["status"];
+    return this.sendRequest(APIRoute)["projectStatus"]["status"];
   }
 }
 
