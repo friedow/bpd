@@ -1,4 +1,5 @@
 import RestInterface from './RestInterface.js';
+import BasicConnector from './BasicConnector.js';
 
 /*eslint-disable */
 if (!String.prototype.format) {
@@ -14,7 +15,7 @@ if (!String.prototype.format) {
 }
 /*eslint-enable */
 
-class SonarqubeConnector {
+class SonarqubeConnector extends BasicConnector{
 
   static getApiRouteForListOfProjects() {
     return "api/projects/index";
@@ -35,42 +36,10 @@ class SonarqubeConnector {
     return "api/ce/component?componentId={0}";
   }
 
-  static getServerRequestURI() {
-      return "{0}/{1}";
-  }
-
   constructor(remoteAddress, requestMethod = "GET") {
-      this.remoteAddress = remoteAddress;
-      this.requestMethod = requestMethod;
-      this.client = new RestInterface();
+      super(remoteAddress, requestMethod);
   }
-  getRemoteAddress() {
-      return self.remoteAddress;
-  }
-  getRemotePort() {
-      return self.remotePort;
-  }
-
-  setClient(client) {
-      this.client = client;
-  }
-
-  sendRequest(APIRoute) {
-    const URI = SonarqubeConnector.getServerRequestURI().format(this.remoteAddress, APIRoute);
-    this.client.open(this.requestMethod, URI, false);
-    this.client.sendRequest();
-    return this.parseJSON();
-  }
-
-  parseJSON() {
-    try {
-        return JSON.parse(this.client.getResponse());
-    } catch (error) {
-        document.getElementById('root').innerHTML = "ERROR!";
-        return [];
-    }
-  }
-
+  
   getProjectList() {
     const APIRoute = SonarqubeConnector.getApiRouteForListOfProjects();
     return this.sendRequest(APIRoute);
