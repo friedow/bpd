@@ -11,7 +11,7 @@ class RESTInterface {
 
     sendRequest() {
         this.client.setRequestHeader("Content-type", "application/jsonp");
-        this.client.setRequestHeader("User-Agent", "bpd/0.0.1");
+        // this.client.setRequestHeader("User-Agent", "bpd/0.0.1");
         for (const header in this.header) {
           this.client.setRequestHeader(header, this.header[header]);
         }
