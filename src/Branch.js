@@ -6,11 +6,11 @@ class Branch {
     this.repository = repositoryUrl.split("/")[1];
     this.apiClients = apiClients;
     this.branchPattern = /BP[\-|\_](\d{0,4})[\-|\_](.+)/;
-    // this.componentId = this.apiClients["sonarqube"].getComponentIdForProject(this.key);
-    // this.lastExecutionTime = this.apiClients["sonarqube"].getLastExecutionForComponentId(this.componentId);
+    // this.sonarqubeComponentId = this.apiClients["sonarqube"].getComponentIdForProject(this.getSonarqubeKey());
     this.latestCommitTimer = "";
     this.latestCommitter = "unknown";
     this.buildStatus = null;
+    this.qualityGateStatus = null;
     this.update();
   }
 
@@ -29,7 +29,13 @@ class Branch {
     } catch (e) {
         this.buildStatus = null;
     }
+    try {
+      this.qualityGateStatus = this.apiClients["sonarqube"].getQualityGateStatusForProject(this.getSonarqubeKey());
+    } catch (e) {
+        this.qualityGateStatus = null;
+    }
   }
+
 
   getName() {
     return this.name;
@@ -80,19 +86,34 @@ class Branch {
     return "";
   }
   getJiraLink() {
-    return "https://bpt-lab.org/jira/secure/RapidBoard.jspa?rapidView=8&view=detail&selectedIssue=BP-" + this.getIssueNumber();
+    return ("https://bpt-lab.org/jira/secure/RapidBoard.jspa?rapidView=8&view=detail&selectedIssue=BP-" + this.getIssueNumber());
   }
 
   //SONARQUBE FUNCTIONS
+  getSonarqubeKey() {
+    var sonarqubeKey = "de.hpi.bpt:" + this.getRepository();
+    if(!this.isMasterBranch())
+      sonarqubeKey += ":" + this.getName();
+    return sonarqubeKey;
+  }
   getQualityGateStatus() {
-    return this.apiClients["sonarqube"].getQualityGateStatusForProject(this.getKey());
+    return this.qualityGateStatus;
   }
   doesPassQualityGate() {
-    // if(this.getQualityGateStatus() == "ERROR") {
-    //   return false;
-    // }
-    // return true;
-    return true;
+    return (!(this.getQualityGateStatus() == "ERROR"));
+  }
+  getNiceSonarqubeString() {
+    if(!this.didSonarqubeRun())
+      return "No SonarQube results";
+    if(this.doesPassQualityGate()) {
+      return "Passed quality gate";
+    }
+    else {
+      return "Failed quality gate";
+    }
+  }
+  didSonarqubeRun() {
+    return (this.qualityGateStatus);
   }
 
   //TRAVIS FUNCTIONS

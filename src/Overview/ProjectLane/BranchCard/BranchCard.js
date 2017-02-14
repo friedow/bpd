@@ -15,7 +15,7 @@ class BranchCard extends Component {
 
   getTitleForCard() {
     if (this.state.issueNumber && this.state.issueDescription) {
-      return <span><a href={this.branch.getJiraLink()} className="white-text">#{this.state.issueNumber}</a><br />{this.state.issueDescription}</span>;
+      return <span><a href={this.branch.getJiraLink()} className="white-text" target="_blank">#{this.state.issueNumber}</a><br />{this.state.issueDescription}</span>;
     }
     else {
       return this.state.branchName;
@@ -29,7 +29,25 @@ class BranchCard extends Component {
     if(this.branch.didLatestBuildPass()) {
       return "green darken-3";
     }
-    return "orange darken-4";
+    return "deep-orange darken-3";
+  }
+
+  getColorBasedOnQualityGate() {
+    if(!this.branch.didSonarqubeRun()) {
+      return "blue-grey";
+    }
+    if(this.branch.doesPassQualityGate()) {
+      return "green darken-3";
+    }
+    return "deep-orange darken-3";
+  }
+  getFooterForCard() {
+    var footerText = "</> " + this.branch.getNiceSonarqubeString();
+    return (
+      <div className={`card-action ${this.getColorBasedOnQualityGate()}`}>
+        {footerText}
+      </div>
+    );
   }
 
   render() {
@@ -38,9 +56,7 @@ class BranchCard extends Component {
         <div className="card-content white-text">
           <span className="card-title">{this.getTitleForCard()}</span>
           {this.branch.getLastCommitTimeAsString()}
-          <div className="card-action">
-            <a href={this.branch.getJiraLink}>Open in Jira</a>
-          </div>
+          {this.getFooterForCard()}
         </div>
       </div>
     );
