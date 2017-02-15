@@ -1,4 +1,3 @@
-import RestInterface from './RestInterface.js';
 import BasicConnector from './BasicConnector.js';
 
 /*eslint-disable */
