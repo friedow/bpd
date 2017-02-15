@@ -20,9 +20,13 @@ class Branch {
   *
   */
   update() {
-    const latestInformation = this.apiClients["gitHub"].getDetailsAboutBranch(this.getRepositoryUrl(), this.getName());
-    this.latestCommitTimer = new Date(latestInformation["commit"]["commit"]["author"]["date"]);
-    this.latestCommitter = latestInformation["commit"]["commit"]["author"]["name"];
+    try {
+      const latestInformation = this.apiClients["gitHub"].getDetailsAboutBranch(this.getRepositoryUrl(), this.getName());
+      this.latestCommitTimer = new Date(latestInformation["commit"]["commit"]["author"]["date"]);
+      this.latestCommitter = latestInformation["commit"]["commit"]["author"]["name"];
+    } catch (e) {
+      return 1;
+    }
     try {
       const latestBuildInformation = this.apiClients["travis"].getDetailsAboutLatestBuildOfBranch(this.getRepositoryUrl(), this.getName());
       this.buildStatus = latestBuildInformation["branch"]["state"];
