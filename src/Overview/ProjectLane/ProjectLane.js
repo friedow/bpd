@@ -1,29 +1,55 @@
 import React, { Component } from 'react';
-import './ProjectLane.css';
 import BranchCard from './BranchCard/BranchCard.js';
+import Branch from '../../Branch.js';
+import './ProjectLane.css';
 
 class ProjectLane extends Component {
   constructor(props) {
     super(props);
+    this.state = {branches: []};
   }
-  render() {
-    const branches = this.props.apiClients["sonarqube"].getBranchesForProject(this.props.projectKey);
-    const branchCards = branches.map((branch) => {
-      return <BranchCard key={branch["k"]} projectKey={this.props.projectKey} branchKey={branch["k"]} />;
+  componentDidMount() {
+    this.loadBranches();
+  }
+
+  loadBranches() {
+    let gitHubBranches = this.props.apiClients["gitHub"].getBranchesForRepository(this.props.repository);
+    let unsortedBranches = gitHubBranches.map((branch) => {
+      return new Branch(branch["name"], this.props.repository, this.props.apiClients);
     });
+    let sortedBranches = this.sortBranches(unsortedBranches).slice(0, 6);
+    this.setState({branches: sortedBranches});
+  }
+
+  sortBranches(unsortedBranches) {
+      return unsortedBranches.sort((branch1, branch2) => {
+        if (branch1.isDeveloperBranch()) {
+          return -9999999999999;
+        }
+        else if (branch2.isDeveloperBranch()) {
+          return Number.MAX_VALUE;
+        }
+        return branch2.getLastCommitTime() - branch1.getLastCommitTime();
+      });
+  }
+
+  render() {
     return (
       <div className="projectLane">
-        {this.props.projectKey}
         <div className="row">
-          <div className="col s12 m6">
-            {branchCards}
+          <div className="col s1">
+            <div className="card small teal">
+              <div className="card-content white-text">
+                <span className="card-title vertical-text">{this.props.repository.split("/")[1]}</span>
+              </div>
+            </div>
+          </div>
+          <div className="col s11">
+              {this.state.branches.map((branch, index) =>
+                <BranchCard branch={branch}/>
+              )}
           </div>
         </div>
-{
-        // <div className="vertical-text">
-        //   This is a lane for project {this.props.projectKey}
-        // </div>
-}
       </div>
     );
   }

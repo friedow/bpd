@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
-import './Overview.css';
 import ProjectLane from './ProjectLane/ProjectLane.js';
+import './Overview.css';
 
 class Overview extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
-    const projectLanes = this.props.monitoredProjects.map((project) =>
-        <ProjectLane projectKey={project} apiClients={this.props.apiClients} key={project} />
-    );
-
     return (
       <div>
         <nav>List of projects</nav>
-        {projectLanes}
+        {this.props.monitoredRepositories.map((repository) =>
+          <ProjectLane key={repository}
+                       repository={repository}
+                       apiClients={this.props.apiClients} />
+        )}
       </div>
     );
   }
