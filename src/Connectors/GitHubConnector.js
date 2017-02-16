@@ -1,4 +1,5 @@
 import BasicConnector from './BasicConnector.js';
+import Settings from '../bpd_properties.js';
 
 /*eslint-disable */
 if (!String.prototype.format) {
@@ -28,7 +29,7 @@ class GitHubConnector extends BasicConnector {
 
   constructor(remoteAddress, name, isUser, requestMethod = "GET") {
       super(remoteAddress, requestMethod);
-      this.setHeader("Authorization", "");
+      this.setHeader("Authorization", Settings["gitHubAuthToken"]);
   }
 
   getListOfRepositories(username, isUser) {

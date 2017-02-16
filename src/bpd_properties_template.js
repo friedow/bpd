@@ -1,0 +1,16 @@
+/**
+* PLEASE COPY AND RENAME THIS FILE BY REMOVING "_template" FROM ITS NAME.
+* THEN ENTER THE DESIRED SETTINGS
+*
+*/
+
+var settings = {};
+
+/**
+* SET YOUR ENCODED GITHUB BASIC AUTH CREDENTIALS HERE
+* USE E.G. POSTMAN TO CREATE THE ENCODED STRING
+*
+*/
+settings["gitHubAuthToken"] = "";
+
+module.exports = settings;
