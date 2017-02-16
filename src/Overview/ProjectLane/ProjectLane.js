@@ -10,6 +10,13 @@ class ProjectLane extends Component {
   }
   componentDidMount() {
     this.loadBranches();
+    this.timerID = setInterval(
+      () => this.loadBranches(),
+      120000
+    );
+  }
+  componentWillUnmount() {
+    clearInterval(this.timerID);
   }
 
   loadBranches() {
