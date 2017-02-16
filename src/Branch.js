@@ -151,14 +151,16 @@ class Branch {
     }
     try {
       const latestCoverallsInformation = this.apiClients["coveralls"].getCoverageInformationBySha(this.latestSha);
-      console.log(latestCoverallsInformation);
       this.coverage = parseFloat(latestCoverallsInformation["covered_percent"]);
     } catch (e) {
       this.coverage = null;
     }
   }
   hasCoverage() {
-    return (this.coverage);
+    if (this.coverage) {
+      return true;
+    }
+    return false;
   }
   getCoverage() {
     if(this.hasCoverage()) {
