@@ -1,6 +1,11 @@
-.cardlane {
+.status-lanes {
   position: absolute;
+  bottom: 0px;
   left: 0px;
   right: 0px;
+}
+
+.card-lane {
+  color: white;
   padding: 10px 24px 10px 24px;
 }

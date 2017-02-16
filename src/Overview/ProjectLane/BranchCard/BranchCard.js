@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import TextLane from './CardLanes/TextLane/TextLane.js';
+import ProgressLane from './CardLanes/ProgressLane/ProgressLane.js';
 import './BranchCard.css';
 
 class BranchCard extends Component {
@@ -67,10 +69,9 @@ class BranchCard extends Component {
         <div className={`card small horizontal ${this.getColorBasedOnLatestBuild()}`}>
           <div className="card-content white-text">
             <span className="card-title">{this.getTitleForCard()}</span>
-            {this.branch.getLastCommitTimeAsString()}
-            <br />
-            <div className={`card-action ${this.getColorBasedOnQualityGate()}`}>
-                {`</> ${this.branch.getNiceSonarqubeString()} ${this.displayCoverage()}`}
+            <div className="status-lanes">
+              <TextLane value={this.branch.getLastCommitTimeAsString()} />
+                <TextLane value={`</> ${this.branch.getNiceSonarqubeString()} ${this.displayCoverage()}`} color={this.getColorBasedOnQualityGate()} />
             </div>
           </div>
         </div>

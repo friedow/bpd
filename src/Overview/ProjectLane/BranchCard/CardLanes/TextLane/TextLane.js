@@ -4,7 +4,7 @@ import './TextLane.css';
 class TextLane extends Component {
   constructor(props) {
     super(props);
-    this.state = {text: this.props.text};
+    this.state = {text: this.props.value};
   }
   componentDidMount() {
 
@@ -13,7 +13,7 @@ class TextLane extends Component {
 
   render() {
     return (
-      <div className="cardlane">
+      <div className={`card-lane ${this.props.color}`}>
         {this.state.text}
       </div>
     );

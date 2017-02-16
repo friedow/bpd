@@ -13,7 +13,7 @@ class ProgressLane extends Component {
 
   render() {
     return (
-      <div className="cardlane">
+      <div className="card-lane">
         ProgressLane
       </div>
     );
