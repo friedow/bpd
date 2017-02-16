@@ -46,7 +46,7 @@ class ProjectLane extends Component {
           </div>
           <div className="col s11">
               {this.state.branches.map((branch, index) =>
-                <BranchCard branch={branch}/>
+                <BranchCard key={index} branch={branch}/>
               )}
           </div>
         </div>

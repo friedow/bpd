@@ -5,7 +5,6 @@ class RESTInterface {
     }
 
     open(requestMethod, api, async) {
-      console.log(api);
         this.client.open(requestMethod, api, async);
     }
 
