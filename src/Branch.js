@@ -9,8 +9,10 @@ class Branch {
     // this.sonarqubeComponentId = this.apiClients["sonarqube"].getComponentIdForProject(this.getSonarqubeKey());
     this.latestCommitTimer = "";
     this.latestCommitter = "unknown";
+    this.latestSha = null;
     this.buildStatus = null;
     this.qualityGateStatus = null;
+    this.coverage = null;
     this.update();
   }
 
@@ -24,20 +26,13 @@ class Branch {
       const latestInformation = this.apiClients["gitHub"].getDetailsAboutBranch(this.getRepositoryUrl(), this.getName());
       this.latestCommitTimer = new Date(latestInformation["commit"]["commit"]["author"]["date"]);
       this.latestCommitter = latestInformation["commit"]["commit"]["author"]["name"];
+      this.latestSha = latestInformation["commit"]["sha"];
     } catch (e) {
       return 1;
     }
-    try {
-      const latestBuildInformation = this.apiClients["travis"].getDetailsAboutLatestBuildOfBranch(this.getRepositoryUrl(), this.getName());
-      this.buildStatus = latestBuildInformation["branch"]["state"];
-    } catch (e) {
-        this.buildStatus = null;
-    }
-    try {
-      this.qualityGateStatus = this.apiClients["sonarqube"].getQualityGateStatusForProject(this.getSonarqubeKey());
-    } catch (e) {
-        this.qualityGateStatus = null;
-    }
+    this.updateTravisInformation();
+    this.updateSonarqubeInformation();
+    this.updateCoverallsInformation();
   }
 
 
@@ -94,6 +89,15 @@ class Branch {
   }
 
   //SONARQUBE FUNCTIONS
+
+  updateSonarqubeInformation() {
+    try {
+      this.qualityGateStatus = this.apiClients["sonarqube"].getQualityGateStatusForProject(this.getSonarqubeKey());
+    } catch (e) {
+        this.qualityGateStatus = null;
+    }
+  }
+
   getSonarqubeKey() {
     var sonarqubeKey = "de.hpi.bpt:" + this.getRepository();
     if(!this.isMasterBranch())
@@ -108,12 +112,12 @@ class Branch {
   }
   getNiceSonarqubeString() {
     if(!this.didSonarqubeRun())
-      return "No SonarQube results";
+      return "no results";
     if(this.doesPassQualityGate()) {
-      return "Passed quality gate";
+      return "QG passed";
     }
     else {
-      return "Failed quality gate";
+      return "QG failed";
     }
   }
   didSonarqubeRun() {
@@ -121,6 +125,15 @@ class Branch {
   }
 
   //TRAVIS FUNCTIONS
+  updateTravisInformation() {
+    try {
+      const latestBuildInformation = this.apiClients["travis"].getDetailsAboutLatestBuildOfBranch(this.getRepositoryUrl(), this.getName());
+      this.buildStatus = latestBuildInformation["branch"]["state"];
+    } catch (e) {
+        this.buildStatus = null;
+    }
+  }
+
   getBuildStatus() {
     return this.buildStatus;
   }
@@ -131,6 +144,30 @@ class Branch {
     return (this.buildStatus);
   }
 
+  //COVERALLS FUNCTIONS
+  updateCoverallsInformation() {
+    if(!this.latestSha) {
+      return;
+    }
+    try {
+      const latestCoverallsInformation = this.apiClients["coveralls"].getCoverageInformationBySha(this.latestSha);
+      this.coverage = parseFloat(latestCoverallsInformation["covered_percent"]);
+    } catch (e) {
+      this.coverage = null;
+    }
+  }
+  hasCoverage() {
+    if (this.coverage) {
+      return true;
+    }
+    return false;
+  }
+  getCoverage() {
+    if(this.hasCoverage()) {
+      return (Math.round(this.coverage * 10) / 10).toString();
+    }
+    return "";
+  }
 
 }
 
