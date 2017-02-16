@@ -1,0 +1,30 @@
+.progress-card-lane {
+  display: flex;
+  flex-direction: row;
+  white-space: nowrap;
+}
+
+.progress-card-lane-base, .progress-card-lane-bar {
+  flex-grow: 1;
+  padding: 10px 24px 10px 24px;
+}
+.progress-card-lane-bar {
+  z-index: 2;
+}
+
+.progress-card-lane-base {
+  z-index: 1;
+}
+
+
+/*.progress-card-lane-base, .progress-card-lane-bar {
+  flex-grow: 1;
+  padding: 10px 24px 10px 24px;
+}
+.progress-card-lane-bar {
+  z-index: 2;
+}
+
+.progress-card-lane-base {
+  z-index: 1;
+}*/

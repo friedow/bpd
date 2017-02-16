@@ -56,13 +56,6 @@ class BranchCard extends Component {
     }
   }
 
-  displayCoverage() {
-    if(this.branch.hasCoverage()) {
-      return " | " + this.branch.getCoverage() + " %";
-    }
-    return "";
-  }
-
   render() {
     return (
       <div className="col s2" key={this.branch.getName()} >
@@ -71,7 +64,8 @@ class BranchCard extends Component {
             <span className="card-title">{this.getTitleForCard()}</span>
             <div className="status-lanes">
               <TextLane value={this.branch.getLastCommitTimeAsString()} />
-                <TextLane value={`</> ${this.branch.getNiceSonarqubeString()} ${this.displayCoverage()}`} color={this.getColorBasedOnQualityGate()} />
+              <ProgressLane value={this.branch.getCoverage()} valueText={this.branch.getNiceCoverage()} changeText={this.branch.getNiceCoverageChange()} />
+              <TextLane value={`</> ${this.branch.getNiceSonarqubeString()}`} color={this.getColorBasedOnQualityGate()} />
             </div>
           </div>
         </div>

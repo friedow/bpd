@@ -6,6 +6,5 @@
 }
 
 .card-lane {
-  color: white;
-  padding: 10px 24px 10px 24px;
+  min-height: 30px;
 }

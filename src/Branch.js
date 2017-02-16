@@ -13,6 +13,7 @@ class Branch {
     this.buildStatus = null;
     this.qualityGateStatus = null;
     this.coverage = null;
+    this.coverageChange = null;
     this.update();
   }
 
@@ -152,8 +153,10 @@ class Branch {
     try {
       const latestCoverallsInformation = this.apiClients["coveralls"].getCoverageInformationBySha(this.latestSha);
       this.coverage = parseFloat(latestCoverallsInformation["covered_percent"]);
+      this.coverageChange = parseFloat(latestCoverallsInformation["coverage_change"]);
     } catch (e) {
       this.coverage = null;
+      this.coverageChange = null;
     }
   }
   hasCoverage() {
@@ -165,6 +168,28 @@ class Branch {
   getCoverage() {
     if(this.hasCoverage()) {
       return (Math.round(this.coverage * 10) / 10).toString();
+    }
+    return "";
+  }
+  getCoverageChange() {
+    if(this.hasCoverage()) {
+      return (Math.round(this.coverageChange * 10) / 10).toString();
+    }
+    return "";
+  }
+  getNiceCoverage() {
+    var niceString = this.getCoverage();
+    if(niceString) {
+      return niceString + " %";
+    }
+    return "";
+  }
+  getNiceCoverageChange() {
+    var niceString = this.getCoverageChange();
+    if(niceString) {
+      if(!niceString.includes("-"))
+        niceString = "+" + niceString;
+      return niceString + " %";
     }
     return "";
   }
