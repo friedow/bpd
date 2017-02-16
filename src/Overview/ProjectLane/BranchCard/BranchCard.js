@@ -54,6 +54,13 @@ class BranchCard extends Component {
     }
   }
 
+  displayCoverage() {
+    if(this.branch.hasCoverage()) {
+      return " | " + this.branch.getCoverage() + " %";
+    }
+    return "";
+  }
+
   render() {
     return (
       <div className="col s2" key={this.branch.getName()} >
@@ -61,8 +68,9 @@ class BranchCard extends Component {
           <div className="card-content white-text">
             <span className="card-title">{this.getTitleForCard()}</span>
             {this.branch.getLastCommitTimeAsString()}
+            <br />
             <div className={`card-action ${this.getColorBasedOnQualityGate()}`}>
-                {`</> ${this.branch.getNiceSonarqubeString()}`}
+                {`</> ${this.branch.getNiceSonarqubeString()} ${this.displayCoverage()}`}
             </div>
           </div>
         </div>
