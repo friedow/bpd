@@ -9,6 +9,7 @@ class Branch {
     // this.sonarqubeComponentId = this.apiClients["sonarqube"].getComponentIdForProject(this.getSonarqubeKey());
     this.latestCommitTimer = "";
     this.latestCommitter = "unknown";
+    this.latestCommitterAvatarUrl = "";
     this.latestSha = null;
     this.buildStatus = null;
     this.qualityGateStatus = null;
@@ -27,6 +28,7 @@ class Branch {
       const latestInformation = this.apiClients["gitHub"].getDetailsAboutBranch(this.getRepositoryUrl(), this.getName());
       this.latestCommitTimer = new Date(latestInformation["commit"]["commit"]["author"]["date"]);
       this.latestCommitter = latestInformation["commit"]["commit"]["author"]["name"];
+      this.latestCommitterAvatarUrl = latestInformation["commit"]["author"]["avatar_url"];
       this.latestSha = latestInformation["commit"]["sha"];
     } catch (e) {
       return 1;
@@ -57,6 +59,9 @@ class Branch {
   }
   getLatestCommitter() {
     return this.latestCommitter;
+  }
+  getLatestCommitterAvatarUrl() {
+    return this.latestCommitterAvatarUrl;
   }
   isDeveloperBranch() {
     return (this.getName() == "dev" || this.getName() == "developer");
