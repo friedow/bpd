@@ -8,7 +8,7 @@ class RESTInterfaceMock {
 
     }
 
-    setAcceptHeader(acceptedResponse) {
+    setHeader(header, acceptedResponse) {
 
     }
 
