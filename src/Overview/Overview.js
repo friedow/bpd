@@ -6,7 +6,11 @@ class Overview extends Component {
   render() {
     return (
       <div>
-        <nav>List of projects</nav>
+        <nav>
+          <div className="nav-wrapper">
+            <a href="#" className="brand-logo center">bpd</a>
+          </div>
+        </nav>
         {this.props.monitoredRepositories.map((repository) =>
           <ProjectLane key={repository}
                        repository={repository}
