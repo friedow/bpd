@@ -21,10 +21,10 @@ class ProgressLane extends Component {
     if(this.props.progressColor) {
       this.setState({progressColor: this.props.progressColor});
     }
-    if(this.props.valueText) {
+    if(this.props.valueText && this.props.showLabels) {
       this.setState({valueText: this.props.valueText});
     }
-    if(this.props.changeText) {
+    if(this.props.changeText && this.props.showLabels) {
       this.setState({changeText: this.props.changeText});
     }
   }
