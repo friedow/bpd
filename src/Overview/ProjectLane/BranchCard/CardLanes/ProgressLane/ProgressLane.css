@@ -6,7 +6,10 @@
 
 .progress-card-lane-base, .progress-card-lane-bar {
   flex-grow: 1;
-  padding: 10px 24px 10px 24px;
+  overflow: hidden;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  box-sizing: border-box;
 }
 .progress-card-lane-bar {
   z-index: 2;
@@ -16,15 +19,16 @@
   z-index: 1;
 }
 
-
-/*.progress-card-lane-base, .progress-card-lane-bar {
-  flex-grow: 1;
-  padding: 10px 24px 10px 24px;
-}
-.progress-card-lane-bar {
-  z-index: 2;
+.progress-card-lane-bar-content, .progress-card-lane-base-content {
+  font-style: italic;
+  font-size: 12px;
 }
 
-.progress-card-lane-base {
-  z-index: 1;
-}*/
+.progress-card-lane-base-content {
+  padding-left: 10px;
+  padding-right: 24px;
+}
+
+.progress-card-lane-bar-content {
+  padding-left: 24px;
+}

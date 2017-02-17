@@ -29,16 +29,29 @@ class ProgressLane extends Component {
     }
   }
 
+  getChangeTextColor() {
+    if(this.state.changeText.includes("+")) {
+      return "green-text text-darken-4";
+    }
+    if(this.state.changeText.includes("-")) {
+      return "red-text text-darken-4";
+    }
+  }
+
 
   render() {
-    // <div className={`progress-card-lane-bar z-depth-2 ${this.state.progressColor}`} style={{flex: `0 0 ${this.state.value}%`}}>{this.state.valueText}</div>
-    // <div className={`progress-card-lane-base  ${this.state.baseColor}`}>{this.state.changeText}</div>
-
     return (
       <div className="card-lane progress-card-lane " >
-        
-        <div className={`progress-card-lane-bar z-depth-2 ${this.state.progressColor}`} style={{flex: `0 0 ${this.state.value}%`}}></div>
-        <div className={`progress-card-lane-base  ${this.state.baseColor}`} style={{flex: `1 0`}}></div>
+        <div className={`progress-card-lane-bar z-depth-2 ${this.state.progressColor}`} style={{flex: `0 0 ${this.state.value}%`}}>
+          <span className="progress-card-lane-bar-content teal-text text-accent-2">
+            {this.state.valueText}
+          </span>
+        </div>
+        <div className={`progress-card-lane-base  ${this.state.baseColor}`} style={{flex: `1 0`}}>
+          <span className={`progress-card-lane-base-content ${this.getChangeTextColor()}`}>
+            {this.state.changeText}
+          </span>
+        </div>
       </div>
     );
   }
