@@ -60,7 +60,7 @@ class BranchCard extends Component {
   render() {
     return (
       <div className="col s2" key={this.branch.getName()} >
-        <div className={`card small horizontal ${this.getColorBasedOnLatestBuild()}`}>
+        <div className={`card small horizontal hoverable ${this.getColorBasedOnLatestBuild()}`}>
           <div className="card-content white-text">
             <span className="card-title">{this.getTitleForCard()}</span>
             <div className="status-lanes">
