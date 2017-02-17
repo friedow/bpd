@@ -55,6 +55,9 @@ class Branch {
   getLastCommitTimeAsString() {
     return this.getLastCommitTime().toLocaleString();
   }
+  getLatestCommitter() {
+    return this.latestCommitter;
+  }
   isDeveloperBranch() {
     return (this.getName() == "dev" || this.getName() == "developer");
   }

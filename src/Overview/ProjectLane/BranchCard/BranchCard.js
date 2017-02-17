@@ -64,6 +64,7 @@ class BranchCard extends Component {
             <span className="card-title">{this.getTitleForCard()}</span>
             <div className="status-lanes">
               <TextLane value={this.branch.getLastCommitTimeAsString()} />
+              <TextLane value={this.branch.getLatestCommitter()} />
               <ProgressLane value={this.branch.getCoverage()} valueText={this.branch.getNiceCoverage()} changeText={this.branch.getNiceCoverageChange()} />
               <TextLane value={`</> ${this.branch.getNiceSonarqubeString()}`} color={this.getColorBasedOnQualityGate()} />
             </div>
