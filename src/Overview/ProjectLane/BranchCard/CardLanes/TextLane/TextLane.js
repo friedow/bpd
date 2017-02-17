@@ -8,7 +8,7 @@ class TextLane extends Component {
   }
   componentDidMount() {
     if(this.props.color) {
-      this.setState({color: this.props.color});
+      this.setState({backgroundColor: this.props.color});
     }
     else {
       this.setState({color: ""});
@@ -17,7 +17,7 @@ class TextLane extends Component {
 
   render() {
     return (
-      <div className={`card-lane text-card-lane ${this.state.color}`}>
+      <div className={`card-lane text-card-lane ${this.state.backgroundColor}`}>
         {this.state.text}
       </div>
     );
