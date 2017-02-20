@@ -44,7 +44,7 @@ class ProjectLane extends Component {
       <div className="project-lane">
         <div className="row">
           <div className="col s12">
-            <div className="card grey darken-2">
+            <div className="card grey darken-3">
               <div className="card-content white-text">
                 <span className="card-title">{this.props.repository.split("/")[1]}</span>
                   {this.state.branches.map((branch, index) =>
