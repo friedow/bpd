@@ -107,11 +107,11 @@ module.exports = {
       // A missing `test` is equivalent to a match.
       {
         exclude: [
-          /\.html$/,
-          /\.(js|jsx)$/,
-          /\.css$/,
-          /\.json$/,
-          /\.svg$/
+            /\.html$/,
+            /\.(js|jsx)$/,
+            /\.(css|scss)$/,
+            /\.json$/,
+            /\.svg$/
         ],
         loader: 'url',
         query: {
@@ -131,6 +131,11 @@ module.exports = {
           // directory for faster rebuilds.
           cacheDirectory: true
         }
+      },
+      {
+          test: /\.scss$/,
+          include: paths.appSrc,
+          loaders: ["style", "css", "sass"]
       },
       // "postcss" loader applies autoprefixer to our CSS.
       // "css" loader resolves paths in CSS and adds assets as dependencies.
