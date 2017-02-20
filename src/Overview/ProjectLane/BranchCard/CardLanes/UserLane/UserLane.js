@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './UserLane.css';
 
 class UserLane extends Component {
   constructor(props) {
@@ -15,8 +14,11 @@ class UserLane extends Component {
 
   render() {
     return (
-      <div className="card-lane user-card-lane">
-        <div className="chip"><img src={this.state.avatarUrl} />{this.state.username}</div>
+      <div className="card-lane user-card-lane grey darken-3">
+        <img className="user-image" src={this.state.avatarUrl} />
+        <p className="user-name">
+          {this.state.username}
+        </p>
       </div>
     );
   }
