@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import TextLane from './CardLanes/TextLane/TextLane.js';
+import ProgressLane from './CardLanes/ProgressLane/ProgressLane.js';
+import UserLane from './CardLanes/UserLane/UserLane.js';
 import './BranchCard.css';
 
 class BranchCard extends Component {
@@ -54,23 +57,17 @@ class BranchCard extends Component {
     }
   }
 
-  displayCoverage() {
-    if(this.branch.hasCoverage()) {
-      return " | " + this.branch.getCoverage() + " %";
-    }
-    return "";
-  }
-
   render() {
     return (
       <div className="col s2" key={this.branch.getName()} >
-        <div className={`card small horizontal ${this.getColorBasedOnLatestBuild()}`}>
+        <div className={`card small horizontal hoverable ${this.getColorBasedOnLatestBuild()}`}>
           <div className="card-content white-text">
             <span className="card-title">{this.getTitleForCard()}</span>
-            {this.branch.getLastCommitTimeAsString()}
-            <br />
-            <div className={`card-action ${this.getColorBasedOnQualityGate()}`}>
-                {`</> ${this.branch.getNiceSonarqubeString()} ${this.displayCoverage()}`}
+            <div className="status-lanes">
+              <TextLane value={this.branch.getLastCommitTimeAsString()} textColor="grey-text text-lighten-2" />
+              <UserLane username={this.branch.getLatestCommitter()} avatarUrl={this.branch.getLatestCommitterAvatarUrl()} />
+              <ProgressLane value={this.branch.getCoverage()} valueText={this.branch.getNiceCoverage()} changeText={this.branch.getNiceCoverageChange()} showLabels={false} />
+              <TextLane value={`</> ${this.branch.getNiceSonarqubeString()}`} color={this.getColorBasedOnQualityGate()} />
             </div>
           </div>
         </div>

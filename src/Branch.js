@@ -9,10 +9,12 @@ class Branch {
     // this.sonarqubeComponentId = this.apiClients["sonarqube"].getComponentIdForProject(this.getSonarqubeKey());
     this.latestCommitTimer = "";
     this.latestCommitter = "unknown";
+    this.latestCommitterAvatarUrl = "";
     this.latestSha = null;
     this.buildStatus = null;
     this.qualityGateStatus = null;
     this.coverage = null;
+    this.coverageChange = null;
     this.update();
   }
 
@@ -26,6 +28,7 @@ class Branch {
       const latestInformation = this.apiClients["gitHub"].getDetailsAboutBranch(this.getRepositoryUrl(), this.getName());
       this.latestCommitTimer = new Date(latestInformation["commit"]["commit"]["author"]["date"]);
       this.latestCommitter = latestInformation["commit"]["commit"]["author"]["name"];
+      this.latestCommitterAvatarUrl = latestInformation["commit"]["author"]["avatar_url"];
       this.latestSha = latestInformation["commit"]["sha"];
     } catch (e) {
       return 1;
@@ -53,6 +56,12 @@ class Branch {
   }
   getLastCommitTimeAsString() {
     return this.getLastCommitTime().toLocaleString();
+  }
+  getLatestCommitter() {
+    return this.latestCommitter;
+  }
+  getLatestCommitterAvatarUrl() {
+    return this.latestCommitterAvatarUrl;
   }
   isDeveloperBranch() {
     return (this.getName() == "dev" || this.getName() == "developer");
@@ -152,8 +161,10 @@ class Branch {
     try {
       const latestCoverallsInformation = this.apiClients["coveralls"].getCoverageInformationBySha(this.latestSha);
       this.coverage = parseFloat(latestCoverallsInformation["covered_percent"]);
+      this.coverageChange = parseFloat(latestCoverallsInformation["coverage_change"]);
     } catch (e) {
       this.coverage = null;
+      this.coverageChange = null;
     }
   }
   hasCoverage() {
@@ -165,6 +176,28 @@ class Branch {
   getCoverage() {
     if(this.hasCoverage()) {
       return (Math.round(this.coverage * 10) / 10).toString();
+    }
+    return "";
+  }
+  getCoverageChange() {
+    if(this.hasCoverage()) {
+      return (Math.round(this.coverageChange * 10) / 10).toString();
+    }
+    return "";
+  }
+  getNiceCoverage() {
+    var niceString = this.getCoverage();
+    if(niceString) {
+      return niceString + " %";
+    }
+    return "";
+  }
+  getNiceCoverageChange() {
+    var niceString = this.getCoverageChange();
+    if(niceString) {
+      if(!niceString.includes("-"))
+        niceString = "+" + niceString;
+      return niceString + " %";
     }
     return "";
   }
