@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './ProgressLane.css';
 
 class ProgressLane extends Component {
   constructor(props) {
@@ -8,8 +7,8 @@ class ProgressLane extends Component {
     if(this.props.value) {
       value = this.props.value;
     }
-    this.state = {baseColor: 'teal lighten-2',
-        progressColor: 'teal',
+    this.state = {baseColor: 'orange lighten-1',
+        progressColor: 'orange-darken-1',
         valueText: ' ',
         changeText: ' ',
         value: value};

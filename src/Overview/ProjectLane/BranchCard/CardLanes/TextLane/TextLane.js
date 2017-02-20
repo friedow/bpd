@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './TextLane.css';
 
 class TextLane extends Component {
   constructor(props) {

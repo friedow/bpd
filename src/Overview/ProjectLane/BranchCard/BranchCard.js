@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import TextLane from './CardLanes/TextLane/TextLane.js';
 import ProgressLane from './CardLanes/ProgressLane/ProgressLane.js';
 import UserLane from './CardLanes/UserLane/UserLane.js';
-import './BranchCard.css';
 
 class BranchCard extends Component {
   constructor(props) {
@@ -20,11 +19,10 @@ class BranchCard extends Component {
     if (this.state.issueNumber && this.state.issueDescription) {
       return (
         <span>
+          <p>{this.state.issueDescription}</p>
           <a href={this.branch.getJiraLink()} className="white-text" target="_blank">
             #{this.state.issueNumber}
           </a>
-          <br />
-          {this.state.issueDescription}
         </span>
       );
     }
@@ -35,7 +33,7 @@ class BranchCard extends Component {
 
   getColorBasedOnLatestBuild() {
     if(!this.branch.didTravisRun()) {
-      return "blue-grey";
+      return "grey darken-2";
     }
     else if(this.branch.didLatestBuildPass()) {
       return "green darken-3";
@@ -47,7 +45,7 @@ class BranchCard extends Component {
 
   getColorBasedOnQualityGate() {
     if(!this.branch.didSonarqubeRun()) {
-      return "blue-grey";
+      return "grey darken-2";
     }
     else if(this.branch.doesPassQualityGate()) {
       return "green darken-3";
@@ -59,15 +57,15 @@ class BranchCard extends Component {
 
   render() {
     return (
-      <div className="col s2" key={this.branch.getName()} >
+      <div className="branch-card col s2" key={this.branch.getName()} >
         <div className={`card small horizontal hoverable ${this.getColorBasedOnLatestBuild()}`}>
           <div className="card-content white-text">
             <span className="card-title">{this.getTitleForCard()}</span>
             <div className="status-lanes">
               <TextLane value={this.branch.getLastCommitTimeAsString()} textColor="grey-text text-lighten-2" />
-              <UserLane username={this.branch.getLatestCommitter()} avatarUrl={this.branch.getLatestCommitterAvatarUrl()} />
-              <ProgressLane value={this.branch.getCoverage()} valueText={this.branch.getNiceCoverage()} changeText={this.branch.getNiceCoverageChange()} showLabels={false} />
               <TextLane value={`</> ${this.branch.getNiceSonarqubeString()}`} color={this.getColorBasedOnQualityGate()} />
+              <ProgressLane value={this.branch.getCoverage()} valueText={this.branch.getNiceCoverage()} changeText={this.branch.getNiceCoverageChange()} showLabels={false} />
+              <UserLane username={this.branch.getLatestCommitter()} avatarUrl={this.branch.getLatestCommitterAvatarUrl()}/>
             </div>
           </div>
         </div>
