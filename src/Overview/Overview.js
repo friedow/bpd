@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import ProjectLane from './ProjectLane/ProjectLane.js';
-import './Overview.css';
 
 class Overview extends Component {
   render() {
     return (
       <div>
         <nav>
-          <div className="nav-wrapper">
-            <a href="#" className="brand-logo center">bpd</a>
+          <div className="nav-wrapper orange lighten-1">
+            <a href="#" className="brand-logo center">BPD</a>
           </div>
         </nav>
         {this.props.monitoredRepositories.map((repository) =>

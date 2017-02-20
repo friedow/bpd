@@ -5,7 +5,6 @@ import SonarqubeConnector from './Connectors/SonarqubeConnector.js';
 import TravisConnector from './Connectors/TravisConnector.js';
 import CoverallsConnector from './Connectors/CoverallsConnector.js';
 import Settings from './bpd_properties.js';
-import './App.css';
 
 const sonarqubeClient = new SonarqubeConnector(Settings["sonarqubeApi"]);
 const travisClient = new TravisConnector(Settings["travisApi"]);
