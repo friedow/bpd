@@ -1,0 +1,13 @@
+@import "CardLanes/CardLanes";
+.branch-card {
+	.card-title {
+		word-wrap: break-word;
+	}
+
+	.status-lanes {
+		bottom: 0px;
+		left: 0px;
+		position: absolute;
+		width: 100%;
+	}
+}
