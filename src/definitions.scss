@@ -1,7 +1,7 @@
-$sm: 576px;
-$md: 768px;
-$lg: 992px;
-$uhd: 3800px;
+$sm: 540px;
+$md: 720px;
+$lg: 960px;
+$uhd: 3400px;
 
 .default-media-query {
 	@media screen and (max-width: $sm) {
