@@ -6,7 +6,7 @@ class Overview extends Component {
     return (
       <div>
         <nav>
-          <div className="nav-wrapper orange lighten-1">
+          <div className="nav-wrapper grey darken-3">
             <a href="#" className="brand-logo center">BPD</a>
           </div>
         </nav>

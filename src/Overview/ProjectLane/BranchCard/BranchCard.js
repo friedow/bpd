@@ -39,7 +39,7 @@ class BranchCard extends Component {
       return "green darken-3";
     }
     else {
-      return "deep-orange darken-3";
+      return "deep-orange";
     }
   }
 
@@ -51,7 +51,7 @@ class BranchCard extends Component {
       return "green darken-3";
     }
     else {
-      return "deep-orange darken-3";
+      return "deep-orange";
     }
   }
 

@@ -1,5 +1,5 @@
 @import "CardLanes/CardLanes";
-.branch-card {
+.project-lane .branch-card {
 	.card-title {
 		word-wrap: break-word;
 	}
@@ -10,7 +10,7 @@
 		position: absolute;
 		width: 100%;
 	}
-	.card {
+	.card.small {
 		height: 375px;
 	}
 }

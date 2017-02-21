@@ -7,8 +7,8 @@ class ProgressLane extends Component {
     if(this.props.value) {
       value = this.props.value;
     }
-    this.state = {baseColor: 'orange lighten-1',
-        progressColor: 'orange-darken-1',
+    this.state = {baseColor: 'grey darken-2',
+        progressColor: 'green darken-4',
         valueText: ' ',
         changeText: ' ',
         value: value};
