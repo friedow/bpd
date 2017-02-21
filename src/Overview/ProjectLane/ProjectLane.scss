@@ -1,0 +1,10 @@
+@import "BranchCard/BranchCard";
+
+.project-lane{
+	.card .card-content .card-title {
+		@media screen and (min-width: $uhd) {
+			line-height: 50px;
+			font-size: 35px;
+		}
+	}
+}

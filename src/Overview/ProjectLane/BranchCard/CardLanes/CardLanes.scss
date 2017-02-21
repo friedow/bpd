@@ -1,0 +1,11 @@
+@import "ProgressLane/ProgressLane";
+@import "TextLane/TextLane";
+@import "UserLane/UserLane";
+
+.card-lane {
+	height: 40px;
+	@media screen and (min-width: $uhd) {
+		height: 60px;
+		font-size: 25px;
+	}
+}

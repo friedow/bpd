@@ -1,0 +1,15 @@
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$uhd: 3800px;
+
+.default-media-query {
+	@media screen and (max-width: $sm) {
+	}
+	@media screen and (min-width: $md) {
+	}
+	@media screen and (min-width: $lg) {
+	}
+	@media screen and (min-width: $uhd) {
+	}
+}
