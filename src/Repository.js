@@ -22,7 +22,7 @@ class Repository {
                     branch["name"],
                     new Branch(
                         branch["name"],
-                        this.name + "/" + this.owner,
+                        this.getRepositoryUrl(),
                         this.apiClients));
             }
         }
@@ -42,6 +42,7 @@ class Repository {
      * This excludes dev branch.
      *
      * @param n branches will be returned
+     * @returns Array with n branches
      */
     getMostRecentBranches(n = 5) {
         let unsortedBranches = this.getBranches().filter( (branch) => {
@@ -58,6 +59,7 @@ class Repository {
      * This includes the dev branch, counting towards n.
      *
      * @param n branches will be returned
+     * @returns Array with n branches incl. dev
      */
     getMostRecentBranchesWithDev(n = 5) {
         return [this.getDeveloperBranch()].
@@ -76,6 +78,11 @@ class Repository {
         });
     }
 
+    /**
+     * Get all known branches.
+     *
+     * @returns Array
+     */
     getBranches() {
         if (this.branches.length === 0) {
             return null;
@@ -83,6 +90,11 @@ class Repository {
         return [...this.branches.values()];
     }
 
+    /**
+     * Concatenates owner and repo-name to a url-part.
+     *
+     * @returns {string}
+     */
     getRepositoryUrl() {
         return this.owner + "/" + this.name;
     }
