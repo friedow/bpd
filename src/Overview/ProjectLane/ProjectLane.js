@@ -12,7 +12,7 @@ class ProjectLane extends Component {
         this.updateBranches();
         this.timerID = setInterval(
             () => this.updateBranches(),
-            120000
+            20000
         );
     }
     componentWillUnmount() {
