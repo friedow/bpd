@@ -62,8 +62,12 @@ class Repository {
      * @returns Array with n branches incl. dev
      */
     getMostRecentBranchesWithDev(n = 5) {
-        return [this.getDeveloperBranch()].
-            concat(this.getMostRecentBranches(n-1));
+        let devBranch = this.getDeveloperBranch();
+        let branchesWithDev = [];
+        if (devBranch) {
+            branchesWithDev.push(devBranch);
+        }
+        return branchesWithDev.concat(this.getMostRecentBranches(n-1));
     }
 
     getDeveloperBranch() {
