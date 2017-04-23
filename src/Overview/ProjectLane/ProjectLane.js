@@ -20,6 +20,7 @@ class ProjectLane extends Component {
     }
 
     updateBranches() {
+        this.repository.updateListOfBranches();
         let shownBranches = this.repository.getMostRecentBranchesWithDev(6);
         this.setState({branches: shownBranches});
     }
