@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BranchCard from './BranchCard/BranchCard.js';
-import Branch from '../../Branch.js';
+import Repository from '../../Repository.js';
 
 class ProjectLane extends Component {
   constructor(props) {
@@ -17,27 +17,13 @@ class ProjectLane extends Component {
   componentWillUnmount() {
     clearInterval(this.timerID);
   }
+        this.repository = new Repository(this.props.repository.split("/")[1], this.props.repository.split("/")[0], this.props.apiClients);
 
-  loadBranches() {
-    let gitHubBranches = this.props.apiClients["gitHub"].getBranchesForRepository(this.props.repository);
-    let unsortedBranches = gitHubBranches.map((branch) => {
-      return new Branch(branch["name"], this.props.repository, this.props.apiClients);
-    });
-    let sortedBranches = this.sortBranches(unsortedBranches).slice(0, 6);
-    this.setState({branches: sortedBranches});
-  }
+    updateBranches() {
+        let shownBranches = this.repository.getMostRecentBranchesWithDev(6);
+        this.setState({branches: shownBranches});
+    }
 
-  sortBranches(unsortedBranches) {
-      return unsortedBranches.sort((branch1, branch2) => {
-        if (branch1.isDeveloperBranch()) {
-          return -9999999999999;
-        }
-        else if (branch2.isDeveloperBranch()) {
-          return Number.MAX_VALUE;
-        }
-        return branch2.getLastCommitTime() - branch1.getLastCommitTime();
-      });
-  }
 
   render() {
     return (
