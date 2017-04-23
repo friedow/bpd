@@ -6,8 +6,9 @@ import UserLane from './CardLanes/UserLane/UserLane.js';
 class BranchCard extends Component {
     constructor(props) {
         super(props);
-        this.state = {branchName: this.props.branch.getName(),
-                        branch: this.props.branch};
+        this.state = {
+            branchName: this.props.branch.getName(),
+            branch: this.props.branch};
     }
     componentDidMount() {
         this.extractInformation(this.props);
@@ -22,7 +23,9 @@ class BranchCard extends Component {
             this.setState({branchName: props.branch.getName()});
         }
         if(props.branch.isIssueExtractable()) {
-            this.setState({issueNumber: props.branch.getIssueNumber(), issueDescription: props.branch.getIssueName()});
+            this.setState({
+                issueNumber: props.branch.getIssueNumber(),
+                issueDescription: props.branch.getIssueName()});
         }
         this.setState({branch: props.branch});
     }
@@ -74,9 +77,18 @@ class BranchCard extends Component {
                     <div className="card-content white-text">
                         <span className="card-title">{this.getTitleForCard()}</span>
                         <div className="status-lanes">
-                            <TextLane value={`</> ${this.state.branch.getNiceSonarqubeString()}`} color={this.getColorBasedOnQualityGate()} />
-                            <ProgressLane value={this.state.branch.getCoverage()} valueText={this.state.branch.getNiceCoverage()} changeText={this.state.branch.getNiceCoverageChange()} showLabels={false} />
-                            <UserLane username={this.state.branch.getLatestCommitter()} lastCommitTime={this.state.branch.getLastCommitTimeAsString()} avatarUrl={this.state.branch.getLatestCommitterAvatarUrl()}/>
+                            <TextLane
+                                value={`</> ${this.state.branch.getNiceSonarqubeString()}`}
+                                color={this.getColorBasedOnQualityGate()} />
+                            <ProgressLane
+                                value={this.state.branch.getCoverage()}
+                                valueText={this.state.branch.getNiceCoverage()}
+                                changeText={this.state.branch.getNiceCoverageChange()}
+                                showLabels={false} />
+                            <UserLane
+                                username={this.state.branch.getLatestCommitter()}
+                                lastCommitTime={this.state.branch.getLastCommitTimeAsString()}
+                                avatarUrl={this.state.branch.getLatestCommitterAvatarUrl()}/>
                         </div>
                     </div>
                 </div>
