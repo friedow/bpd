@@ -24,6 +24,7 @@ class Branch {
   *
   */
   update() {
+      const lastCommitTime = this.getLastCommitTime();
     try {
       const latestInformation = this.apiClients["gitHub"].getDetailsAboutBranch(this.getRepositoryUrl(), this.getName());
       this.latestCommitTimer = new Date(latestInformation["commit"]["commit"]["author"]["date"]);
@@ -33,9 +34,17 @@ class Branch {
     } catch (e) {
       return 1;
     }
-    this.updateTravisInformation();
-    this.updateSonarqubeInformation();
-    this.updateCoverallsInformation();
+    const outdated = lastCommitTime < this.getLastCommitTime();
+
+    if (!this.getBuildStatus() || outdated) {
+        this.updateTravisInformation();
+    }
+    if (!this.getQualityGateStatus() || outdated) {
+        this.updateSonarqubeInformation();
+    }
+    if (!this.getCoverage() || outdated) {
+        this.updateCoverallsInformation();
+    }
   }
 
 
