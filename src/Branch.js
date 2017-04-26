@@ -45,7 +45,7 @@ class Branch {
         const outdated = lastCommitTime < this.getLastCommitTime();
 
         if (outdated) {
-            this.resetServiceStatus()
+            this.resetServiceStatus();
         }
 
         if (!this.getBuildStatus()) {
@@ -85,29 +85,29 @@ class Branch {
         return this.latestCommitterAvatarUrl;
     }
     isDeveloperBranch() {
-        return (this.getName() == "dev" || this.getName() == "developer");
+        return (this.getName() === "dev" || this.getName() === "developer");
     }
     isMasterBranch() {
-        return (this.getName() == "master");
+        return (this.getName() === "master");
     }
     isIssueExtractable() {
         const ret = this.branchPattern.exec(this.getName());
-        if(ret) {
+        if (ret) {
             return true;
         }
         return false;
     }
     getIssueNumber() {
         const ret = this.branchPattern.exec(this.getName());
-        if(ret){
+        if (ret){
             return ret[1];
         }
         return "";
     }
     getIssueName() {
         const ret = this.branchPattern.exec(this.getName());
-        if(ret){
-            var unformattedName = ret[2];
+        if (ret){
+            let unformattedName = ret[2];
             unformattedName = unformattedName.replace(/\_/g, " ");
             unformattedName = unformattedName.replace(/\-/g, " ");
             return unformattedName;
@@ -137,8 +137,8 @@ class Branch {
         }
     }
     getSonarqubeKey() {
-        var sonarqubeKey = "de.hpi.bpt:" + this.getRepository();
-        if(!this.isMasterBranch())
+        let sonarqubeKey = "de.hpi.bpt:" + this.getRepository();
+        if (!this.isMasterBranch())
             sonarqubeKey += ":" + this.getName();
         return sonarqubeKey;
     }
@@ -146,12 +146,12 @@ class Branch {
         return this.qualityGateStatus;
     }
     doesPassQualityGate() {
-        return (!(this.getQualityGateStatus() == "ERROR"));
+        return (!(this.getQualityGateStatus() === "ERROR"));
     }
     getNiceSonarqubeString() {
-        if(!this.didSonarqubeRun())
+        if (!this.didSonarqubeRun())
             return "no results";
-        if(this.doesPassQualityGate()) {
+        if (this.doesPassQualityGate()) {
             return "QG passed";
         }
         else {
@@ -189,7 +189,7 @@ class Branch {
 
     //COVERALLS FUNCTIONS
     updateCoverallsInformation() {
-        if(!this.latestSha) {
+        if (!this.latestSha) {
             return;
         }
         try {
@@ -207,29 +207,30 @@ class Branch {
         return false;
     }
     getCoverage() {
-        if(this.hasCoverage()) {
+        if (this.hasCoverage()) {
             return (Math.round(this.coverage * 10) / 10).toString();
         }
         return "";
     }
     getCoverageChange() {
-        if(this.hasCoverage()) {
+        if (this.hasCoverage()) {
             return (Math.round(this.coverageChange * 10) / 10).toString();
         }
         return "";
     }
     getNiceCoverage() {
-        var niceString = this.getCoverage();
-        if(niceString) {
+        const niceString = this.getCoverage();
+        if (niceString) {
             return niceString + " %";
         }
         return "";
     }
     getNiceCoverageChange() {
-        var niceString = this.getCoverageChange();
-        if(niceString) {
-            if(!niceString.includes("-"))
+        let niceString = this.getCoverageChange();
+        if (niceString) {
+            if (!niceString.includes("-")) {
                 niceString = "+" + niceString;
+            }
             return niceString + " %";
         }
         return "";
