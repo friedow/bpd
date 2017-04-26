@@ -1,5 +1,12 @@
 class Branch {
 
+    /**
+     * Represents a branch in GitHub. Contains latest meta information and the status of connected services.
+     *
+     * @param branchName a string containing the name of the branch
+     * @param repositoryUrl a string identifying the repository the branch belongs to (organization|username/repositoryname)
+     * @param apiClients an array with all available api clients
+     */
     constructor(branchName, repositoryUrl, apiClients) {
         this.name = branchName;
         this.owner = repositoryUrl.split("/")[0];
@@ -20,7 +27,8 @@ class Branch {
 
     /**
      * Fetches information from GitHub-API and parses returned JSON
-     * to reset attribute-values.
+     * to reset attribute-values. If the branch was updated, all service information will be reset.
+     * If no service status are available, it will be tried to fetch the latest information.
      *
      */
     update() {
@@ -110,6 +118,9 @@ class Branch {
         return ("https://bpt-lab.org/jira/secure/RapidBoard.jspa?rapidView=8&view=detail&selectedIssue=BP-" + this.getIssueNumber());
     }
 
+    /**
+     * Resets information if all services (e.g. Travis).
+     */
     resetServiceStatus() {
         this.resetSonarqubeInformation();
         this.resetTravisInformation();
