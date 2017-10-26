@@ -49,13 +49,15 @@
     "whatwg-fetch": "1.0.0"
   },
   "dependencies": {
+    "concurrently": "^3.5.0",
+    "cors-anywhere": "^0.4.0",
     "jquery": "^3.1.1",
     "materialize-css": "^0.98.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2"
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "start": "concurrently \"node scripts/start.js\" \"node scripts/cors.js\"",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"
   },
