@@ -11,7 +11,7 @@ const travisClient = new TravisConnector(Settings["travisApi"]);
 const gitHubClient = new GitHubConnector(Settings["gitHubApi"]);
 const coverallsClient = new CoverallsConnector(Settings["coverallsApi"]);
 const clients = {sonarqube:sonarqubeClient, gitHub:gitHubClient, travis:travisClient, coveralls:coverallsClient};
-const monitoredRepositories = ['bptlab/argos-frontend', 'bptlab/argos-backend'];
+const monitoredRepositories = ['MaximilianV/java-junit-sample'];
 
 class App extends Component {
   render() {
