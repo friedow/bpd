@@ -13,7 +13,7 @@
     "describe": true,
     "it": true
   },
-  "extends": "eslint:recommended",
+  "extends": ["eslint:recommended", "plugin:react/all"],
   "parserOptions": {
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,
