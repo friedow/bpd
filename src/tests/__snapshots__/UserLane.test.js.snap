@@ -1,0 +1,16 @@
+exports[`test UserLane renders correctly 1`] = `
+<div
+  className="card-lane user-card-lane grey darken-3">
+  <img
+    className="user-image"
+    src="http://pictures-of-john-doe.com/profile.png" />
+  <p
+    className="user-name">
+    John Doe
+  </p>
+  <p
+    className="last-committed">
+    23:59
+  </p>
+</div>
+`;
